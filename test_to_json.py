@@ -1,11 +1,44 @@
+import cached
 import unittest
-from to_json import JsonFormat
-from to_json import Student
+from to_json import JsonFormat, Student
 
-class TestToJson(unittest.TestCase):
-    def test_to_json(self):
-        self.assertTrue(JsonFormat.to_json(self,[5, "sadasd", 6, [45, 65], True, False, None, {"sdf": 34}]) == "[ 5, 'sadasd', 6, [ 45, 65 ], True, False, None, { 'sdf':34 } ]", "Ошибка в переводе json")
-        self.assertFalse(JsonFormat.to_json([5, "sadasd", 6, [45, 65], True, False, None, {"sdf": 34}]) == "[ 5, 'sadasd', 6, [ 45, 65 ], Trsdfue, False, None, { 'sdf':34 } ]", "Ошибка в переводе json")
+
+class TestJson(unittest.TestCase):
+
+    def setUp(self):
+        self.converter = JsonFormat()
+        self.student = Student(
+            name="Vasia",
+            age=18,
+            average_mark=7.2,
+            person_name="lala",
+            person_age=322
+        )
+
+    def test_list_to_string(self):
+        self.assertTrue(self.converter.to_json([1, 2.0, '3', True, False, None, self.student])
+                        == "[ 1, 2.0, '3', True, False, None, { 'Student':{ 'name':'Vasia', 'age':18, 'average_mark':7.2, 'person':{ 'Person':{ 'name':'lala', 'age':322 } } } } ]",
+                        "Неверный формат list")
+        self.assertFalse(self.converter.to_json([1, 2.0, '3', True, False, None, self.student])
+                        == "[ 1, 2.0, '3', True, False, None, { 'Stsdfdudent':{ 'name':'Vasia', 'age':18, 'average_mark':7.2, 'person':{ 'Person':{ 'name':'lala', 'age':322 } } } } ]",
+                        "Неверный формат list")
+
+    def test_dict_to_string(self):
+        self.assertTrue(self.converter.to_json({'1' : 2.0, '3' : True, 4 : None, '5' :self.student})
+                        == "{ '1':2.0, '3':True, '4':None, '5':{ 'Student':{ 'name':'Vasia', 'age':18, 'average_mark':7.2, 'person':{ 'Person':{ 'name':'lala', 'age':322 } } } } }",
+                        "Неверный формат dict")
+        self.assertFalse(self.converter.to_json({'1' : 2.0, '3' : True, 4 : None, '5' :self.student})
+                         == "{ '1':2.0, '3':True, '4':None, '5':{ 'Studensat':{ 'name':'Vasia', 'age':18, 'average_mark':7.2, 'person':{ 'Person':{ 'name':'lala', 'age':322 } } } } }",
+                         "Неверный формат dict")
+
+    def test_class_to_dict(self):
+        self.assertTrue(self.converter.to_json(self.student)
+                        == "{ 'Student':{ 'name':'Vasia', 'age':18, 'average_mark':7.2, 'person':{ 'Person':{ 'name':'lala', 'age':322 } } } }",
+                        "Неверный формат class")
+        self.assertFalse(self.converter.to_json(self.student)
+                         == "{ 'Student':{ 'nafsame':'Vasia', 'age':18, 'average_mark':7.2, 'person':{ 'Person':{ 'name':'lala', 'age':322 } } } }",
+                         "Неверный формаsaт class")
+
 
 if __name__ == '__main__':
     unittest.main()

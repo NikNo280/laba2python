@@ -1,12 +1,8 @@
 class Student:
-    def __init__(self, name, age, active, balance, other_names, friends, spouse, person_name, person_age):
+    def __init__(self, name, age, average_mark, person_name, person_age):
         self.name = name
         self.age = age
-        self.active = active
-        self.balance = balance
-        self.other_names = other_names
-        self.friends = friends
-        self.spouse = spouse
+        self.average_mark = average_mark
         self.person = Person(person_name, person_age)
 
 
@@ -73,22 +69,3 @@ class JsonFormat:
     def _dict_format(self, key, value):
         return "'{key}':{value}".format(key=key, value=value)
 
-new_user = Student(
-    name="admin",
-    age=19,
-    friends=["Jane", "John"],
-    balance=345.80,
-    other_names=["Doe", "Joe"],
-    active=True,
-    spouse=None,
-    person_name="Nik",
-    person_age=18)
-
-json = JsonFormat()
-k = list()
-k.append(1)
-k.append(2)
-k.append(3)
-k.append(4)
-b = [k, 5, "sadasd", 6, [45, 65], True, False, None, {"sdf": 34}, new_user]
-print(json.to_json(b))
