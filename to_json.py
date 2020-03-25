@@ -68,4 +68,3 @@ class JsonFormat:
 
     def _dict_format(self, key, value):
         return "'{key}':{value}".format(key=key, value=value)
-

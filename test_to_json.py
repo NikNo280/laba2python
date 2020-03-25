@@ -1,4 +1,3 @@
-import cached
 import unittest
 from to_json import JsonFormat, Student
 

@@ -3,7 +3,7 @@ import unittest
 
 from n_vector import N_Vector, Operations
 
-class TestNVector(unittest.TestCase):
+class Test_N_Vector(unittest.TestCase):
     def setUp(self):
         self.test_n_vector = N_Vector("1 2 3")
         self.test_operation1 = Operations("1 2 3", "3 4 5")
