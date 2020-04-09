@@ -2,6 +2,14 @@ import tempfile
 
 file_size = 20000
 
+
+def create_ini(range_tempfile):
+    file_handles = []
+    for _ in range(0, range_tempfile):
+        f_handle = tempfile.NamedTemporaryFile(delete=False)
+        file_handles.append(f_handle)
+    return file_handles
+
 def algoritm_merge_sort(array):
     if len(array) < 2:
         return array
@@ -30,15 +38,6 @@ def merge(left, right):
         j += 1
     return result
 
-def create_ini(range_tempfile):
-    file_handles = []
-    for _ in range(0, range_tempfile):
-        f_handle = tempfile.NamedTemporaryFile(delete=False)
-        file_handles.append(f_handle)
-    return file_handles
-
-
-
 
 def merge_sort(file_input_name, file_output_name):
     arr_int = []
@@ -48,7 +47,7 @@ def merge_sort(file_input_name, file_output_name):
     file_number = 0
     check = False
     add_iterations = 0
-    with open(file_input_name, "r", encoding='utf-8') as file:
+    with open(file_input_name, 'r', encoding='utf-8') as file:
         for i in file.read():
             if i == '\n':
                 count += 1
@@ -62,7 +61,7 @@ def merge_sort(file_input_name, file_output_name):
 
     file_handles = create_ini(file_number)
 
-    with open(file_input_name, "r", encoding='utf-8') as file:
+    with open(file_input_name, 'r', encoding='utf-8') as file:
         for i in range(0, file_number):
             with open(file_handles[i].name, 'a', encoding='utf-8') as file_temp:
                 for j in range(0, file_size):
@@ -113,7 +112,7 @@ def merge_sort(file_input_name, file_output_name):
                 if len(arr_file_temp[i].readline()) > 0:
                     arr_file_temp[i].seek(temp)
                     if int(arr_file_temp[i].readline()) == min_value:
-                        print(min_value)
+                        #print(min_value)
                         file.writelines('{}\n'.format(min_value))
                         temp = arr_file_temp[i].tell()
                         arr_file_temp[i].seek(temp)
@@ -128,8 +127,3 @@ def merge_sort(file_input_name, file_output_name):
     pass
 
 #merge_sort('input_numbers.txt', 'output_numbers.txt')
-
-#with open('output_numbers.txt', 'a', encoding='utf-8') as file:
-    #for i in range(0, 250):
-        #with open(file_handles[i].name, 'r', encoding='utf-8') as file_temp:
-            #file.write(file_temp.read())
