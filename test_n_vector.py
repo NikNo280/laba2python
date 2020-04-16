@@ -1,71 +1,72 @@
 import math
 import unittest
 
-from n_vector import N_Vector, Operations
+from n_vector import N_Vector
+
 
 class Test_N_Vector(unittest.TestCase):
     def setUp(self):
-        self.test_n_vector = N_Vector("1 2 3")
-        self.test_operation1 = Operations("1 2 3", "3 4 5")
-        self.test_operation2 = Operations("6 7 8 9 10", "6 7 8 9 10")
-
-    def test_init(self):
-        self.assertEqual((self.test_n_vector.get_size(), self.test_n_vector.get_dimension()), (int(3), [1, 2, 3]),
-                         "Полученные значения совпадают")
+        self.test_n_vector1 = N_Vector("1 2 3")
+        self.test_n_vector2 = N_Vector("3 4 5")
 
     def test_multiplication_by_constant(self):
-        self.assertFalse(self.test_n_vector.multiplication_by_constant(3) == [7, 3, 2],
-                         "Ошибка в умножении на константу")
-        self.assertTrue(self.test_n_vector.multiplication_by_constant(2) == [6, 12, 18],
-                        "Ошибка в умножении на константу")
+        self.assertTrue(self.test_n_vector1.multiplication_by_constant(3) == [3, 6, 9],
+                        "Error in constant multiplication")
+        self.assertFalse(self.test_n_vector1.multiplication_by_constant(2) == [6, 13, 18],
+                         "Error in constant multiplication")
 
     def test_size(self):
-        self.assertFalse(self.test_n_vector.size() == 13,
-                         "Ошибка, неверно найдена длинна")
-        self.assertTrue(self.test_n_vector.size() == math.sqrt(14),
-                        "Ошибка, неверно найдена длинна")
+        self.assertFalse(self.test_n_vector1.size() == 13,
+                         "Length error")
+        self.assertTrue(self.test_n_vector1.size() == math.sqrt(14),
+                        "Length error")
 
     def test_get_item(self):
-        self.assertFalse(self.test_n_vector.get_item(0) == 2,
-                         "Ошибка, неверно найден item по интедксу")
-        self.assertTrue(self.test_n_vector.get_item(2) == 3,
-                        "Ошибка, неверно найден item по интедксу")
+        self.assertFalse(self.test_n_vector1.get_item(0) == 2,
+                         "Invalid item by index")
+        self.assertTrue(self.test_n_vector1.get_item(2) == 3,
+                        "Invalid item by index")
 
     def test_sum(self):
-        self.assertFalse(self.test_operation1.sum() == [1, 13, 125],
-                         "Ошибка в сложении")
-        self.assertTrue(self.test_operation1.sum() == [4, 6, 8],
-                        "Ошибка в сложении")
+        self.assertFalse(self.test_n_vector1 + self.test_n_vector2 == [1, 13, 125],
+                         "Addition error")
+        self.assertTrue(self.test_n_vector1 + self.test_n_vector2 == [4, 6, 8],
+                        "Addition error")
 
     def test_subtraction(self):
-        self.assertFalse(self.test_operation1.subtraction() == [1, 213, 125],
-                         "Ошибка в вычитании")
-        self.assertTrue(self.test_operation1.subtraction() == [-2, -2, -2],
-                        "Ошибка в вычитании")
+        self.assertFalse(self.test_n_vector1 - self.test_n_vector2 == [1, 213, 125],
+                         "Subtraction error")
+        self.assertTrue(self.test_n_vector1 - self.test_n_vector2 == [-2, -2, -2],
+                        "Subtraction error")
 
     def test_multiplication(self):
-        self.assertFalse(self.test_operation1.multiplication() == [1, 213, 125],
-                         "Ошибка в умножении")
-        self.assertTrue(self.test_operation1.multiplication() == [3, 8, 15],
-                        "Ошибка в умножении")
+        self.assertFalse(self.test_n_vector1 * self.test_n_vector2 == [1, 213, 125],
+                         "Multiplication error")
+        self.assertTrue(self.test_n_vector1 * self.test_n_vector2 == [3, 8, 15],
+                        "Multiplication error")
 
     def test_division(self):
-        self.assertFalse(self.test_operation1.division() == [1, 213, 125],
-                         "Ошибка в делении")
-        self.assertTrue(self.test_operation2.division() == [1, 1, 1, 1, 1],
-                        "Ошибка в делении")
+        self.assertFalse(self.test_n_vector2 / self.test_n_vector1 == [1, 213, 125],
+                         "Division error")
+        self.assertTrue(self.test_n_vector2 / self.test_n_vector1 == [3.0, 2.0, 1.6666666666666667],
+                        "Division error")
 
     def test_scalar_product(self):
-        self.assertFalse(self.test_operation1.scalar_product() == 12,
-                         "Ошибка в скалярном произведении")
-        self.assertTrue(self.test_operation1.scalar_product() == 26,
-                        "Ошибка в скалярном произведении")
+        self.assertFalse(self.test_n_vector1.scalar_product(self.test_n_vector2) == 12,
+                         "Error in scalar product")
+        self.assertTrue(self.test_n_vector1.scalar_product(self.test_n_vector2) == 26,
+                        "Error in scalar product")
 
     def test_equals(self):
-        self.assertFalse(self.test_operation1.equals(),
-                         "Ошибка в сравнении")
-        self.assertTrue(self.test_operation2.equals(),
-                        "Ошибка в сравнении")
+        self.assertFalse(self.test_n_vector1 == self.test_n_vector2,
+                         "Equals error")
+        self.assertTrue(self.test_n_vector1 == self.test_n_vector1,
+                        "Equals error")
+
+    def test_to_str(self):
+        self.assertTrue(self.test_n_vector1.__str__() == "[1, 2, 3]",
+                        "To str error")
+
 
 if __name__ == '__main__':
     unittest.main()
