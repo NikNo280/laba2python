@@ -4,7 +4,5 @@ class Singleton(object):
             cls.instance = super(Singleton, cls).__new__(cls)
         return cls.instance
 
-a = Singleton()
-print("Создание обьекта", a)
-b = Singleton()
-print("Создание обьекта", b)
+class HeirSingleton(Singleton):
+    pass
