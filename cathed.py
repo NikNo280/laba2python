@@ -1,18 +1,10 @@
 def cached(func):
-    old_args = [None, None]
+    old_args = {}
 
     def wrapper(*args, **kwargs):
-        if old_args[0] == args:
-            return old_args[1]
-        else:
-            old_args.clear()
-            old_args.append(args)
-            old_args.append(func(*args, **kwargs))
-            return old_args[1]
+        key = args + tuple(sorted(kwargs.items()))
+        if key not in old_args:
+            old_args[key] = func(*args, **kwargs)
+        return old_args[key]
 
     return wrapper
-
-
-@cached
-def add(a, b):
-    return a + b
