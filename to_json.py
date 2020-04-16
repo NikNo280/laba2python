@@ -1,3 +1,4 @@
+import json
 class JsonFormat:
 
     def to_json(self, obj):
@@ -6,7 +7,7 @@ class JsonFormat:
         elif isinstance(obj, dict):
             return self._dict_to_string(obj)
         else:
-            return self._dict_to_string(self._class_to_dict(obj))
+            return self._normal_type_to_string(obj)
 
     def _list_to_string(self, obj):
         temp = []
@@ -17,22 +18,20 @@ class JsonFormat:
                 temp.append(self._dict_to_string(i))
             elif isinstance(i, (list, tuple)):
                 temp.append(self._list_to_string(i))
-            else:
-                temp.append(self._dict_to_string(self._class_to_dict(i)))
         end_str = ', '.join(temp)
-        return '[ ' + end_str + ' ]'
+        return '[' + end_str + ']'
 
     def _normal_type_to_string(self, obj):
-        if isinstance(obj, (int, float)):
+        if type(obj) == bool:
+            if obj:
+                return 'true'
+            return 'false'
+        elif isinstance(obj, (int, float)):
             return '{}'.format(obj)
         elif type(obj) == str:
-            return "'{}'".format(obj)
-        elif type(obj) == bool:
-            if obj:
-                return 'True'
-            return 'False'
+            return '"{}"'.format(obj)
         elif type(obj) == type(None):
-            return 'None'
+            return 'null'
 
     def _dict_to_string(self, Dict):
         temp = []
@@ -43,14 +42,9 @@ class JsonFormat:
                 temp.append(self._dict_format(key, self._dict_to_string(value)))
             elif isinstance(value, (list, tuple)):
                 temp.append(self._dict_format(key, self._list_to_string(value)))
-            else:
-                temp.append(self._dict_format(key, self._dict_to_string(self._class_to_dict(value))))
         end_str = ', '.join(temp)
-        return '{ ' + end_str + ' }'
+        return '{' + end_str + '}'
 
-    def _class_to_dict(self, obj):
-        obj_dict = {obj.__class__.__name__: obj.__dict__}
-        return obj_dict
 
     def _dict_format(self, key, value):
-        return "'{key}':{value}".format(key=key, value=value)
+        return '"{key}": {value}'.format(key=key, value=value)
