@@ -10,6 +10,7 @@ def create_ini(range_tempfile):
         file_handles.append(f_handle)
     return file_handles
 
+
 def algoritm_merge_sort(array):
     if len(array) < 2:
         return array
@@ -71,7 +72,6 @@ def merge_sort(file_input_name, file_output_name):
                     else:
                         break
 
-
     for i in range(0, file_number):
         arr_int.clear()
         with open(file_handles[i].name, "r", encoding='utf-8') as file_temp:
@@ -101,10 +101,8 @@ def merge_sort(file_input_name, file_output_name):
             temp_file_value.append(int(arr_file_temp[i].readline()))
             arr_file_temp[i].seek(temp)
 
-        if check:
-            n = file_number - 1
-        else:
-            n = file_number
+        n = file_number - 1 if check else file_number
+
         for _ in range(0, (n * file_size) + add_iterations + 1):
             min_value = min(temp_file_value)
             for i in range(0, file_number):
@@ -112,7 +110,7 @@ def merge_sort(file_input_name, file_output_name):
                 if len(arr_file_temp[i].readline()) > 0:
                     arr_file_temp[i].seek(temp)
                     if int(arr_file_temp[i].readline()) == min_value:
-                        #print(min_value)
+                        # print(min_value)
                         file.writelines('{}\n'.format(min_value))
                         temp = arr_file_temp[i].tell()
                         arr_file_temp[i].seek(temp)
@@ -125,5 +123,3 @@ def merge_sort(file_input_name, file_output_name):
                     else:
                         arr_file_temp[i].seek(temp)
     pass
-
-#merge_sort('input_numbers.txt', 'output_numbers.txt')
